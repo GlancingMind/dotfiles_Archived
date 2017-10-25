@@ -1,0 +1,137 @@
+set nocompatible
+
+" Make VIM use XDG directoies
+if empty("$XDG_CACHE_HOME")
+    let $XDG_CACHE_HOME="$HOME/.cache"
+endif
+
+if empty("$XDG_CONFIG_HOME")
+    let $XDG_CONFIG_HOME="$HOME/.config"
+endif
+
+if empty("$XDG_DATA_HOME")
+    let $XDG_DATA_HOME="$HOME/.local/share"
+endif
+
+set directory=$XDG_CACHE_HOME/vim,~/,/tmp
+set backupdir=$XDG_CACHE_HOME/vim,~/,/tmp
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+set runtimepath=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME
+let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+
+" use vim plug for plugin managment
+call plug#begin()
+Plug 'morhetz/gruvbox'
+Plug 'wikitopian/hardmode'
+Plug 'sgur/vim-editorconfig'
+call plug#end()
+
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+
+"hide gvim widgets
+set guioptions-=m "remove menu bar
+set guioptions-=T "remove toolbar
+set guioptions-=r "remove right-hand scroll bar
+set guioptions-=L "remove left-hand scroll bar
+
+set encoding=utf8
+
+" search down into subfolders
+" enables tab-completion for file search via :find
+set path+=**
+
+" enables completion window
+set wildmenu
+
+" show typed commands in bottom right corner
+set showcmd
+
+"some settigns come from http://nvie.com/posts/how-i-boosted-my-vim/
+set nowrap
+set expandtab
+set tabstop=4   "tab = 4 spaces
+set backspace=indent,eol,start  "allow backspace over everthing in insert mode
+set autoindent
+set copyindent "copy the prevous indation on autoindenting
+set number "activate row number
+set shiftwidth=4    "number of spaces to use for autoindenting
+set shiftround
+set showmatch
+set ignorecase  "ignore case when searching
+set smartindent
+set smartcase   "ignore case if search pattern is all lowercase, otherwise case sensitive
+set smarttab    "insert tabs on the start of a line according to shiftwidth, not tabstop
+set hlsearch    "highlight search terms
+set incsearch   "show search matches as you type
+set history=1000    "expand command and search history
+set undolevels=1000 "expand undo levels
+set novisualbell
+set noerrorbells
+set nobackup
+set hidden      "prevent the need of saving before editing of a new file with :e"
+
+"let vim load plugins only if they work for the specific
+"filetype e.g. html, cpp
+filetype plugin indent on
+
+let mapleader=","
+
+"open .vimrc in buffer for instante editing
+nnoremap <silent> <leader>erc :e $MYVIMRC<CR>
+"reload .vimrc for instance settings change
+nnoremap <silent> <leader>rrc :so $MYVIMRC<CR>
+
+"switch . with : to save <shift> key while using
+"cmdline-mode
+nnoremap    .   :
+nnoremap    :   .
+
+"These are to cancel the default behavior of d, D, c, C
+"to put the text they delete in the default register.
+"Note that this means e.g. "ad won't copy the text into
+"register a anymore.  You have to explicitly yank it.
+nnoremap d "_d
+vnoremap d "_d
+nnoremap D "_D
+vnoremap D "_D
+nnoremap c "_c
+vnoremap c "_c
+nnoremap C "_C
+vnoremap C "_C
+
+"remape return key in insert mode to ESC key
+inoremap    <CR>        <ESC>`^
+noremap     <CR>        <ESC>
+"use jj to move to the next line
+inoremap    jj          <C-J>
+
+"toggle paste option on and off to prevent pasted text formating
+set         pastetoggle=<F11>
+
+noremap     <leader>n   :bn<CR>
+noremap     <leader>p   :bp<CR>
+noremap     <F12>       :CommandTFlush<CR>
+
+"set completion popup menu
+set completeopt=preview,longest
+
+""" Customize Appearance
+"set terminal color support to 256 bit
+"set t_Co=256 
+"set t_AB=[48;5;%dm
+"set t_AF=[38;5;%dm
+colorscheme gruvbox
+set background=light
+
+"highlight coloumn and cursorline
+set cursorline
+set cursorcolumn
+
+"set visual printline/mark on coloumn 80
+set cc=80
+
+"enable syntax highlighting
+syntax on
+
+"display status line always
+set laststatus=2
