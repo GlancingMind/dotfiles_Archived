@@ -30,40 +30,40 @@
 #keystate_scrolllock = enable
 #keystate_capslock = enable
 
-"scrot '%Y-%m-%d-%T_$wx$h_scrot.png' -e 'mv $f ~/data/images/screenshots/'"
-    Print
+"scrot '%Y-%m-%d-%T_$wx$h.png' -e 'mv $f $(xdg-user-dir SCREENSHOTS)'"
+Print
 
 # increase volume by 3 percent
 "amixer -q sset Master 3%+ unmute"
-   XF86AudioRaiseVolume
+XF86AudioRaiseVolume
 
 # decrease volume by 3 percent
 "amixer -q sset Master 3%- unmute"
-   XF86AudioLowerVolume
+XF86AudioLowerVolume
 
 # mute/unmute
 "amixer -q sset Master toggle"
-   XF86AudioMute
-    
+XF86AudioMute
+
 #toggle microphone on/off
 "amixer set Capture toggle"
-    XF86AudioMicMute
+XF86AudioMicMute
 
 # suspend to ram
 "sudo systemctl suspend"
-    XF86Sleep 
+XF86Sleep 
 
 # increase backlight brightness
 "xbacklight +10"
-   XF86MonBrightnessUp
+XF86MonBrightnessUp
 
 # decrease backlight brightness
 "xbacklight -10"
-   XF86MonBrightnessDown
+XF86MonBrightnessDown
 
 #Monitor Projection
-"sh $XDG_DATA_HOME/helper_scripts/monitor_projection.sh"
-    XF86Display
+"sh $XDG_DATA_HOME/helper-scripts/monitor-select.sh"
+XF86Display
 
 #
 # End of xbindkeys configuration

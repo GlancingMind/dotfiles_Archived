@@ -9,14 +9,14 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 # set path to Xauthority
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
-# store less histfile in cache directorie
-export LESSHISTFILE="$XDG_CACHE_HOME/less"
+# store less histfile in data directorie
+export LESSHISTFILE="$XDG_DATA_HOME/less"
 
 # set path to vimrc config file
 export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
-# disable check for new versiosn by Hashicorp tools like Vagrant, Packer,...
-export CHECKPOINT_DISABLE="disabled"     #none empty value = diabled
+# disable check for new versions by Hashicorp tools like Vagrant, Packer,...
+export CHECKPOINT_DISABLE="disabled"     #none empty value = disabled
 
 # directory where vagrant stores its VM-specific states 
 # (could give problems with default provisioners)
