@@ -6,8 +6,14 @@ endif
 
 .PHONY: repl build
 
-install:
+install-config:
 	stow --verbose --dir=$(shell pwd) --target=${CONFIG_DIR} config
 
-remove:
+remove-config:
 	stow --verbose --delete --dir=$(shell pwd) --target=${CONFIG_DIR} config
+
+install-helpers:
+	stow --verbose --dir=$(shell pwd) --target=/usr/local/bin helper-scripts
+
+remove-helpers:
+	stow --verbose --delete --dir=$(shell pwd) --target=/usr/local/bin helper-scripts
