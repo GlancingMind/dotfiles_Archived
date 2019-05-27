@@ -26,5 +26,6 @@ pacman-install:
 	makepkg -sicC
 
 clean:
-	rm -r ${st-extracted-name} ${st-archive-name} # patches
+	#delete every file except Makefile, PKGBUILD and config.
+	find . -maxdepth 1 ! -name . ! -name .. ! -name Makefile ! -name PKGBUILD ! -name config.h -exec rm -r "{}" +
 
