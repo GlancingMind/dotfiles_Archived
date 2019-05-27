@@ -42,3 +42,7 @@ URxvt.intensityStyles:   false
 ! LightGrey + White
 *color7:  #7c6f64
 *color15: #3c3836
+
+st.font: Liberation Mono:pixelsize=14:antialias=true:autohint=true
+! hard contrast: *background: #f9f5d7
+st.background:  #928374
