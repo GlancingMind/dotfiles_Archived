@@ -213,6 +213,8 @@ bar {
     position top
     status_command i3status
 
+    font pango: Wuncon Siji 8
+
     strip_workspace_numbers yes
     output LVDS1
     tray_output primary
