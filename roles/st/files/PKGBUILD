@@ -1,0 +1,45 @@
+pkgname=st
+pkgver=0.8.2
+pkgrel=2
+pkgdesc='A simple virtual terminal emulator for X.'
+arch=('x86_64')
+license=('MIT')
+depends=('libxft')
+makedepends=('ncurses' 'libxext')
+url="http://st.suckless.org"
+
+_patches=(https://st.suckless.org/patches/iso14755/st-iso14755-20180911-67d0cb6.diff
+https://st.suckless.org/patches/vertcenter/st-vertcenter-20180320-6ac8c8a.diff
+https://st.suckless.org/patches/xresources/st-xresources-20190105-3be4cf1.diff)
+
+source=(
+	"http://dl.suckless.org/st/st-$pkgver.tar.gz"
+	config.h
+	"${_patches[@]}"
+)
+
+source=("http://dl.suckless.org/st/st-$pkgver.tar.gz"
+        "config.h"
+        "${_patches[@]}")
+
+prepare() {
+	cd $srcdir/st-$pkgver
+
+	for patch in "${_patches[@]}"; do
+   		echo "Applying patch $(basename $patch)..."
+   	 	patch -Np1 -i "$srcdir/$(basename $patch)"
+  	done
+}
+
+build() {
+	make -C $srcdir/st-$pkgver
+}
+
+package() {
+    cd $srcdir/$pkgname-$pkgver
+    make PREFIX=/usr DESTDIR="$pkgdir" TERMINFO="$pkgdir/usr/share/terminfo" install
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 README "$pkgdir/usr/share/doc/$pkgname/README"
+    # remove to avoid conflict with ncurses
+    rm "${pkgdir}/usr/share/terminfo/s/st" "${pkgdir}/usr/share/terminfo/s/st-256color"
+}

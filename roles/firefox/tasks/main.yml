@@ -1,0 +1,16 @@
+- name: Install firefox
+  become: yes
+  package:
+    name: firefox
+    state: present
+
+    #- name: Fetch facts
+    #  set_fact:
+    #    wayland_support: "{{lookup('env', 'XDG_SESSION_TYPE') == 'wayland'}}"
+    #
+    #- name: Enable or disable wayland support for firefox
+    #  lineinfile:
+    #    path: /etc/environment
+    #    line: "MOZ_ENABLE_WAYLAND=1"
+    #  become: true
+    #  when: wayland_support

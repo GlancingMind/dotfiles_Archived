@@ -1,0 +1,11 @@
+- name: Create pacman hook directory
+  file: 
+    path: /etc/pacman.d/hooks
+    state: directory
+
+- name: Install systemd-boot update hook
+  copy:
+    src: "{{role_path}}/files/100-systemd-boot.hook"
+    dest: "/etc/pacman.d/hooks/100-systemd-boot.hook"
+    owner: root
+    group: root

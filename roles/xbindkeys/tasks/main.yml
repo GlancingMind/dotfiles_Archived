@@ -1,0 +1,10 @@
+- name: Install xbindkeys
+  package:
+    name: xbindkeys
+    state: present
+
+- name: Link xbindkeys config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/xbindkeys"
+    state: link

@@ -1,0 +1,9 @@
+- aur:
+  name: havoc-git
+  skip_installed: true
+
+- name: Link config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/havoc"
+    state: link

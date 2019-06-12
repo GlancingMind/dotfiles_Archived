@@ -1,0 +1,10 @@
+- name: Install dunst
+  package:
+    name: dunst
+    state: present
+
+- name: Link dunst config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/dunst"
+    state: link

@@ -1,0 +1,7 @@
+[Match]
+Name=wlan0
+#Name=wlp3s0
+
+[Network]
+DHCP=yes
+IPv6PrivacyExtensions=true

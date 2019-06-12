@@ -1,0 +1,28 @@
+# set path to XDG directories (for more information to this variable see XDG specification)
+XDG_CONFIG_HOME		DEFAULT=/home/sascha/.config
+XDG_CACHE_HOME		DEFAULT=/home/sascha/.cache
+XDG_DATA_HOME		DEFAULT=/home/sascha/.local/share
+
+#set path to zsh config file
+ZDOTDIR			DEFAULT=/home/sascha/.config/zsh
+
+# set path to Xauthority
+XAUTHORITY		DEFAULT=/home/sascha/Xauthority
+
+# store less histfile in cache directory
+LESSHISTFILE		DEFAULT=/home/sascha/.cache/less
+
+# set path to vimrc config file
+VIMINIT			DEFAULT="let $MYVIMRC='/home/sascha/.config/vim/vimrc' | source $MYVIMRC"
+
+# disable check for new versions by Hashicorp tools like Vagrant, Packer,...
+CHECKPOINT_DISABLE	DEFAULT=disabled     #none empty value = disabled
+
+# directory where vagrant stores its global state like storing boxes,...
+VAGRANT_HOME		DEFAULT=/home/sascha/.cache/vagrant
+
+_JAVA_OPTIONS		DEFAULT="-Dawt.useSystemAAFontSettings=lcd_hrgb"
+
+QT_QPA_PLATFORM		DEFAULT=wayland
+
+MOZ_ENABLE_WAYLAND	DEFAULT=1

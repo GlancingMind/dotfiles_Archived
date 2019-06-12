@@ -1,0 +1,10 @@
+- name: Install sxhkd
+  package:
+    name: sxhkd
+    state: present
+
+- name: Link sxhkd config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/sxhkd"
+    state: link

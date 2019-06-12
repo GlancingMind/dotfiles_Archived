@@ -1,0 +1,33 @@
+# Set default values for all following accounts.
+defaults
+auth on
+port 587
+tls on
+
+account web
+host smtp.web.de
+# Envelope-from address
+from {{WEBDE_EMAIL.stdout}}
+user {{WEBDE_EMAIL.stdout}}
+passwordeval "pass personal/web.de | head -n 1"
+
+account yahoo
+host smtp.mail.yahoo.com
+# Envelope-from address
+from {{YAHOO_EMAIL.stdout}}
+user {{YAHOO_EMAIL.stdout}}
+passwordeval "pass personal/yahoo.com | head -n 1"
+
+account outlook
+host smtp.office365.com
+# Envelope-from address
+from {{OUTLOOK_EMAIL.stdout}}
+user {{OUTLOOK_EMAIL.stdout}}
+passwordeval "pass personal/outlook-app-password | head -n 1"
+
+account th
+host mailgate.thm.de
+# Envelope-from address
+from {{TH_EMAIL.stdout}}
+user {{TH_LOGIN.stdout}}
+passwordeval "pass personal/thm | head -n 1"

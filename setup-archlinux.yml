@@ -1,0 +1,25 @@
+- hosts: arch
+  become: yes
+  become_method: su
+  vars:
+    config_dir: "{{lookup('env', 'HOME')}}/.config"
+    username: "{{lookup('env', 'USER')}}"
+  roles:
+    #- network
+    #- localization
+    #- boot
+    #- microcode
+    #- ssd
+
+  tasks:
+    - name: Install sudo
+      package:
+        name: sudo
+        state: present
+
+    - name: Uncomment rule in /etc/sudoers
+      replace:
+        path: /etc/sudoers
+        regexp: "^#\\s+%wheel\\s+ALL=\\(ALL\\)\\s+ALL$"
+        replace: "%wheel ALL=(ALL) ALL"
+        validate: "/usr/bin/visudo -cf %s"

@@ -1,0 +1,9 @@
+- name: Install intel microcode
+  package: 
+    name: intel-ucode
+    state: present
+
+- name: Add ucode image to boot loader entry
+  lineinfile:
+    path: /boot/loader/entries/arch.conf
+    line: initrd /intel-ucode.img

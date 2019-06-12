@@ -1,0 +1,27 @@
+Print
+    scrot '%Y-%m-%d-%T_$wx$h.png' -e 'mv $f $(xdg-user-dir SCREENSHOTS)'
+
+XF86AudioRaiseVolume
+    amixer -q sset Master 3%+ unmute
+
+XF86AudioLowerVolume
+    amixer -q sset Master 3%- unmute
+
+XF86AudioMute
+    amixer -q sset Master toggle
+
+XF86AudioMicMute
+    amixer set Capture toggle
+
+XF86Sleep
+    systemctl suspend
+
+XF86MonBrightnessUp
+    xbacklight +10
+
+XF86MonBrightnessDown
+    xbacklight -10
+
+#Monitor Projection
+XF86Display
+    sh $XDG_DATA_HOME/helper-scripts/monitor-select.sh

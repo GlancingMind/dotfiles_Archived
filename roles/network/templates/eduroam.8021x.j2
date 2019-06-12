@@ -1,0 +1,13 @@
+[Security]
+EAP-Method=PEAP
+EAP-Identity=eduroam@thm.de
+EAP-PEAP-Phase2-Method=MSCHAPV2
+EAP-PEAP-ServerDomainMask=*.thm.de
+EAP-PEAP-CACert=/var/lib/iwd/thcert.pem
+#ask on connection time or uncommend and enter user identity
+EAP-PEAP-Phase2-Identity={{TH_IDENTITY}}
+#ask on connection time or uncommend and enter password
+EAP-PEAP-Phase2-Password={{TH_NETWORK_PW}}
+
+[Settings]
+AutoConnect=true

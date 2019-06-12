@@ -1,0 +1,35 @@
+- name: Install msmtp
+  package:
+    name: msmtp
+    state: present
+
+- name: Fetch web.de login
+  shell: pass personal/web.de | awk '/email/ {print $2}'
+  register: WEBDE_EMAIL
+
+- name: Fetch yahoo login
+  shell: pass personal/yahoo.com | awk '/email/ {print $2}'
+  register: YAHOO_EMAIL
+
+- name: Fetch outlook login
+  shell: pass personal/outlook.de | awk '/email/ {print $2}'
+  register: OUTLOOK_EMAIL
+
+- name: Fetch th email
+  shell: pass personal/thm | awk '/email/ {print $2}'
+  register: TH_EMAIL
+
+- name: Fetch th login
+  shell: pass personal/thm | awk '/login/ {print $2}'
+  register: TH_LOGIN
+
+- name: Create config from template
+  template:
+    src: msmtprc.j2
+    dest: "{{role_path}}/files/msmtprc"
+
+- name: Link msmtp config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/msmtp"
+    state: link

@@ -1,0 +1,9 @@
+dependencies:
+  - feh
+  - i3
+  - i3status
+  - monitor-setups
+  - sxhkd
+  - x11
+  - xdg-usr-dir
+  - zsh

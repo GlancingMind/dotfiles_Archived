@@ -4,34 +4,30 @@
 # $./brightness.sh up
 # $./brightness.sh down
 
-function send_notification {
-    # requests current screen brightness from xbacklight
-    brightness=$(xbacklight -get)
-    # remove fraction from brightness value
-    # divide brightness by bar steps
-    # generate bar with seq e.g. 1-2-3-4
-    # remove numbers from seq
-    bar=$(seq -s "─" $((${brightness%.*}/10)) | sed 's/[0-9]//g')
-    # Send the notification
-    dunstify -i moon-phase-icon -t 3 -u low -r 2593 " $bar"
-
-    # debug information
-    # echo $((${brightness%.*}/10))
-    # echo ${brightness%.*}
-    # seq -s "-" $((${brightness%.*}/10))
-    # seq -s "-" $((${brightness%.*}/10)) | sed 's/[0-9]//g'
+# Send the notification or replace notification with same ID
+# $1 Body of notification
+function SendNotification {
+    local cache_file="${XDG_CACHE_HOME}/helper_scripts/dunst-brightness"
+    mkdir -p $XDG_CACHE_HOME/helper_scripts
+    #read prev notification ID from cache file
+    read ID < $cache_file
+    if [ $ID -gt 0 ]
+    then
+        # replace prev notification
+        dunstify -t 2000 -p -r $ID "Brightness: $1" > /dev/null
+    else
+        dunstify -t 2000 -p "Brightness: $1" > $cache_file
+    fi
 }
 
 case $1 in
     up)
-	# Increase the brightness by 10
-    xbacklight +10
-	send_notification
-	;;
+        xbacklight +10
+        SendNotification $(xbacklight -get | cut -d"." -f1)
+        ;;
     down)
-	# Decrease the brightness by 10
-    xbacklight -10
-	send_notification
-	;;
+        xbacklight -10
+        SendNotification $(xbacklight -get | cut -d"." -f1)
+        ;;
 esac
 

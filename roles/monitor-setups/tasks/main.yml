@@ -1,0 +1,5 @@
+- name: Link monitor configurations
+  file:
+    src: "{{role_path}}/files/monitor-setups.sh"
+    dest: "{{config_dir}}/monitor-setups.sh"
+    state: link

@@ -1,0 +1,17 @@
+- name: Install xdg-usr-dir
+  package:
+    name: xdg-user-dirs
+    state: present
+
+- name: Create config directory
+  file:
+    dest: "{{config_dir}}"
+    state: directory
+
+- name: Link xdg-usr-dir configs
+  copy:
+    src: "{{role_path}}/files/{{item}}"
+    dest: "{{config_dir}}/{{item}}"
+  with_items:
+    - user-dirs.dirs
+    - user-dirs.locale

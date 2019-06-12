@@ -1,0 +1,59 @@
+- name: Set hostname
+  command: hostnamectl set-hostname thinkpad
+
+- name: Generate hostfile
+  vars:
+    hostname: thinkpad
+  template:
+    src: hosts.j2
+    dest: "/etc/hosts"
+
+- name: Install iwd
+  package:
+    name: iwd
+    state: present
+
+- name: Link networkd wireless config
+  file:
+    src: "{{role_path}}/files/network"
+    dest: "/etc/systemd"
+    state: link
+
+- name: Start and enable iwd.service
+  systemd:
+    state: started
+    enabled: yes
+    name: iwd
+
+- name: Start and enable systemd-networkd.service
+  systemd:
+    state: started
+    enabled: yes
+    name: systemd-networkd
+
+- name: Start and enable systemd-resolved.service
+  systemd:
+    state: started
+    enabled: yes
+    name: systemd-resolved
+
+- name: Fetch th network identity
+  shell: pass personal/th-eduroam | awk '/identity/ {print $2}'
+  register: TH_IDENTITY
+
+- name: Fetch th network password
+  shell: pass personal/th-eduroam | awk '/password/ {print $2}'
+  register: TH_NETWORK_PW
+
+- name: Create eduroam config from template
+  template:
+    src: eduroam.8021x.j2
+    dest: "{{role_path}}/files/connections/eduroam.8021x"
+
+- name: Link i3 config
+  copy:
+    src: "{{role_path}}/connections"
+    dest: "/var/lib/iwd"
+
+- name: Correct system clock
+  shell: "timedatectl set-ntp true"

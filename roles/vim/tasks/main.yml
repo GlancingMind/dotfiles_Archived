@@ -1,0 +1,27 @@
+- name: Install VIM
+  package:
+    name: vim
+    state: present
+
+- name: Create config with autoload directory
+  file:
+    dest: "{{config_dir}}/vim/autoload"
+    state: directory
+
+- name: Link vim config
+  file:
+    src: "{{role_path}}/files/{{item}}"
+    dest: "{{config_dir}}/vim/{{item}}"
+    state: link
+  with_items:
+    - vimrc
+    - gvimrc
+
+- name: Install vim-plug
+  get_url:
+    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest: "{{config_dir}}/vim/autoload/"
+
+#TODO maybe use --clean -c 'silent! source vimrc' +Plug...
+- name: Install VIM plugins
+  shell: vim -c +PlugInstall +PlugUpdate +qall

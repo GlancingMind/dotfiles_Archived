@@ -1,0 +1,4 @@
+.vagrant
+roles/msmtp/files/msmtprc
+roles/isync/files/mbsyncrc
+roles/network/files/connections/eduroam.8021x

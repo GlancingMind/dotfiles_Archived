@@ -1,0 +1,10 @@
+- name: Install feh
+  package:
+    name: feh
+    state: present
+
+- name: Link feh config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/feh"
+    state: link

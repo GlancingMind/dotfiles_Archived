@@ -1,0 +1,24 @@
+- name: Set timezone to Europa/Berlin
+  timezone: 
+    name: Europe/Berlin
+ 
+- name: Set hardware clock to system time
+  command: "hwclock --systohc"
+
+- name: Ensure the given locale exists
+  locale_gen:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - en_US.UTF-8
+    - en_US 
+    - de_DE.UTF-8 
+    - de_DE 
+    - de_DE@euro
+
+
+- name: Set default locale
+  command: localectl set-locale LANG=de_DE.UTF-8
+
+- name: Set keymap
+  command: localectl set-keymap de-latin1

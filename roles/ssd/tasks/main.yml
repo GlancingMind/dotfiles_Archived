@@ -1,0 +1,10 @@
+- name: Install fs-trim
+  package: 
+    name: util-linux
+    state: present
+
+- name: Start and enable fs-trim service
+  systemd:
+    state: started
+    enabled: yes
+    name: fstrim.timer

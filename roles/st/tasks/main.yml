@@ -1,0 +1,25 @@
+#This code below shall fetch the latest st and apply the listed patches
+
+- name: Fetch versions of st
+  uri:
+    url: http://dl.suckless.org/st/sha256sums.txt
+    return_content: yes
+  register: response
+
+- set_fact:
+    VERSION: "{{ (response.content | regex_findall('([^\\s.]+)\\s+st-(.+).tar.gz') | sort(attribute=1) | last).1 }}"
+    PATCHES:
+      - https://st.suckless.org/patches/iso14755/st-iso14755-20180911-67d0cb6.diff
+      - https://st.suckless.org/patches/vertcenter/st-vertcenter-20180320-6ac8c8a.diff
+      - https://st.suckless.org/patches/xresources/st-xresources-20190105-3be4cf1.diff
+
+- name: Create config from template
+  template:
+    src: PKGBUILD.j2
+    dest: "{{role_path}}/files/PKGBUILD"
+
+- name: Install st
+  shell: "makepkg --skipchecksum --noconfirm -sicC"
+  args:
+    chdir: "{{role_path}}/files"
+

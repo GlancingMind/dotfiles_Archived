@@ -1,0 +1,11 @@
+- name: Install alacritty
+  package:
+    name: alacritty
+    state: present
+  become: yes
+
+- name: Link config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/alacritty"
+    state: link

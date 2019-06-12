@@ -1,0 +1,22 @@
+- name: Install x11
+  package:
+    name: xorg-server
+    state: present
+
+- name: Install intel video driver
+  become: yes
+  package:
+    name: xf86-video-intel
+    state: present
+
+- name: Link x11 config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/x11"
+    state: link
+
+- name: Link xinitrc to users home
+  file:
+    src: "{{role_path}}/files/xinitrc"
+    dest: "{{lookup('env', 'HOME')}}/.xinitrc"
+    state: link

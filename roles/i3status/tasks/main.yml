@@ -1,0 +1,11 @@
+- name: Install i3status
+  package:
+    name: i3status
+    state: present
+  become: yes
+
+- name: Link i3 config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/i3status"
+    state: link

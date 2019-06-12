@@ -1,64 +1,59 @@
-#!/bin/bash
+#!/bin/sh
 
 # You can call this script like this:
 # $./volume.sh up
 # $./volume.sh down
 # $./volume.sh toggle
 
-
-function get_volume {
-    amixer get Master | grep '%' | head -n 1 | cut -d '[' -f 2 | cut -d '%' -f 1
+function GetVolume {
+    amixer -M get Master | awk '/Mono: Playback/ {print $4}' | tr -d []
 }
 
-function is_mute {
-    amixer get Master | grep '%' | grep -oE '[^ ]+$' | grep off > /dev/null
+function IsMute {
+    amixer get Master | awk '/Mono: Playback/ {exit $6 == "[on]"}'
 }
 
-function get_bar {
-    volume=`get_volume`
+function GetBar {
+    volume=$(GetVolume)
     bar=$(seq -s "─" $(($volume / 5)) | sed 's/[0-9]//g')
 }
 
 # Send the notification or replace notification with same ID
-# $1 Icon to be displayed
-# $2 Body of notification
-function send_notification {
+# $1 Body of notification
+function SendNotification {
     local cache_file="${XDG_CACHE_HOME}/helper_scripts/dunst-volume"
     mkdir -p $XDG_CACHE_HOME/helper_scripts
     #read prev notification ID from cache file
-    read ID < $cache_file 
-	if [ $ID -gt 0 ]
-	then
-	    # replace prev notification
-        dunstify -p -r $ID -i $1 "Volume: $2" > $cache_file
+    read ID < $cache_file
+    if [ $ID -gt 0 ]
+    then
+        # replace prev notification
+        dunstify -t 2000 -p -r $ID "Volume: $1" > /dev/null
     else
-        dunstify -p -i $1 "Volume: $2" > $cache_file
-	fi
+        dunstify -t 2000 -p "Volume: $1" > $cache_file
+    fi
 }
 
 case $1 in
     up)
-	# Increase the volume by 3%
-	amixer -q -M set Master 3%+ unmute
-	get_bar
-	send_notification ICON $bar
-	;;
+        # Increase the volume by 3%
+        amixer -q -M set Master 3%+ unmute
+        SendNotification $(GetVolume)
+        ;;
     down)
-	# Decrease the volume by 3%
-	amixer -q -M set Master 3%- unmute
-	get_bar
-	send_notification ICON $bar
-	;;
+        # Decrease the volume by 3%
+        amixer -q -M set Master 3%- unmute
+        SendNotification $(GetVolume)
+        ;;
     toggle)
-    # Toggle Master volume on/off
-	amixer -q set Master toggle
-	if is_mute ; then
-        # Send the muted notification
-	    send_notification ICON "Mute"
-	else
-	    get_bar
-	    send_notification ICON $bar
-	fi
-	;;
+        # Toggle Master volume on/off
+        amixer -q set Master toggle
+        if IsMute ; then
+            # Send the muted notification
+            SendNotification "Mute"
+        else
+            SendNotification $(GetVolume)
+        fi
+        ;;
 esac
 

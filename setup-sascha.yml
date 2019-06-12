@@ -1,0 +1,97 @@
+- hosts: arch
+  vars:
+    config_dir: /home/sascha/.config
+    username: sascha
+  roles:
+    - environment
+    - xdg-usr-dir
+    - zsh
+    - sway
+    - alacritty
+    - vim
+    - i3status
+  tasks:
+    - name: Add user sascha
+      user:
+        name: sascha
+        groups: wheel,video,libvirt,docker
+        append: yes
+        shell: /bin/zsh
+      become: yes
+
+    - name: Setup config directory
+      file:
+        path: /home/sascha/.config
+        state: directory
+
+    - name: Install other packages
+      package:
+        name: "{{item}}"
+        state: present
+      become: yes
+      with_items:
+        - brightnessctl
+        - bemenu
+        - firefox
+        - qutebrowser
+        - qt5-wayland
+        - libva-intel-driver
+          #- xorg-server-xwayland
+          #- pkgstats
+        - pacman-mirrorlist
+        - alsa-utils
+        - iptables
+          #    - nftables
+          #- iptables-nft
+        - ttf-dejavu
+        - ttf-bitstream-vera
+        - ttf-anonymous-pro
+        - ttf-hanazono
+        - dosfstools
+        - pass
+
+          #- name: Start and enable nftables.service
+          #  systemd:
+          #    state: started
+          #    enabled: yes
+          #    name: nftables.service
+          #  become: yes
+
+    - name: Install docker
+      package:
+        name: docker
+        state: present
+      become: yes
+
+    - name: Start and enable docker.service
+      systemd:
+        state: started
+        enabled: yes
+        name: docker.service
+      become: yes
+
+    - name: Install virtualisation
+      package:
+        name: "{{item}}"
+        state: present
+      become: yes
+      with_items:
+        - vagrant
+        - libvirt
+        - base-devel #required for vagrant-libvirt plugin
+        - qemu
+        - dmidecode
+        - ebtables
+        - dnsmasq
+
+        - name: Start and enable libvirtd.service
+          systemd:
+            state: started
+            enabled: yes
+            name: libvirtd.service
+          become: yes
+
+      #Maybe need to run this as normal user, otherwise plugin is not visible?!
+      #Or install plugin via listing in Vagrantfile
+      #    - name: Install vagrant libvirt plugin
+      #      command: vagrant plugin install vagrant-libvirt

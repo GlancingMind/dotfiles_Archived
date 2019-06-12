@@ -1,0 +1,16 @@
+- name: Create config from template
+  vars:
+    HOME: /home/sascha
+    XDG_CONFIG_HOME: "{{config_dir}}"
+    XDG_DATA_HOME: "{{HOME}}/data"
+    XDG_RUNTIME_DIR: "{{HOME}}"
+    XDG_CACHE_HOME: "{{HOME}}/.cache"
+  template:
+    src: pam_environment.j2
+    dest: "{{role_path}}/files/generated_pam_environment"
+
+- name: Link .pam_environment
+  file:
+    src: "{{role_path}}/files/generated_pam_environment"
+    dest: "/home/sascha/.pam_environment"
+    state: link

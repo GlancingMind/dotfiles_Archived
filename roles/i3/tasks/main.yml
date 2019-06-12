@@ -1,0 +1,10 @@
+- name: Install i3
+  package:
+    name: i3-wm
+    state: present
+
+- name: Link i3 config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/i3"
+    state: link

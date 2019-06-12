@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#TODO: maybe use https://github.com/pockata/mmutils
+
 #Dmenu multi montitor configurator.
 #Inspired from Luke, the Smith of this masterpiece.
 #   https://github.com/LukeSmithxyz/voidrice/blob/master/.scripts/i3cmds/displayselect

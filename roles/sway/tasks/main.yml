@@ -1,0 +1,11 @@
+- name: Install sway
+  package:
+    name: sway
+    state: present
+  become: yes
+
+- name: Link config
+  file:
+    src: "{{role_path}}/files"
+    dest: "{{config_dir}}/sway"
+    state: link

@@ -1,0 +1,24 @@
+- name: Install ZSH
+  package:
+    name: zsh
+    state: present
+  become: yes
+
+- name: Install ZSH
+  package:
+    name: grml-zsh-config
+    state: present
+  become: yes
+
+- name: Create config directory
+  file:
+    dest: "{{config_dir}}/zsh"
+    state: directory
+
+- name: Link config
+  file:
+    src: "{{role_path}}/files/{{item}}"
+    dest: "{{config_dir}}/zsh/.{{item}}"
+    state: link
+  with_items:
+    - zshrc

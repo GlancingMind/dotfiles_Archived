@@ -1,0 +1,110 @@
+Create Both
+SyncState *
+
+#### Account Web #####
+IMAPAccount web
+    Host imap.web.de
+    User {{WEBDE_USER.stdout}}
+    PassCmd "pass personal/web.de | head -n 1"
+    SSLType IMAPS
+
+# remote storage
+IMAPStore web-remote
+    Account web
+
+# local storage
+MaildirStore web-local
+    Subfolders Verbatim
+    # the trailing "/" is important
+    Path ~/data/mail/web/
+
+# load everything except INBOX to rename it in next rule
+Channel web-default
+    Master :web-remote:
+    Slave :web-local:
+    Patterns * !INBOX !Posteingang
+
+# load inbox but rename it to Posteingang
+Channel web-inbox
+    Master :web-remote:INBOX
+    Slave :web-local:Posteingang
+
+Group web
+    Channel web-default
+    Channel web-inbox
+
+#### Account Yahoo #####
+IMAPAccount yahoo
+    Host imap.mail.yahoo.com
+    User {{YAHOO_USER.stdout}}
+    # prompt for password
+    PassCmd "pass personal/yahoo.com | head -n 1"
+    SSLType IMAPS
+
+# remote storage
+IMAPStore yahoo-remote
+    Account yahoo
+
+# local storage
+MaildirStore yahoo-local
+    Subfolders Verbatim
+    # the trailing "/" is important
+    Path ~/data/mail/yahoo/
+
+Channel yahoo
+    Master :yahoo-remote:
+    Slave :yahoo-local:
+    Patterns *
+
+#### Account Outlook  #####
+IMAPAccount outlook
+    Host outlook.office365.com
+    User {{OUTLOOK_USER.stdout}}
+    # prompt for password
+    PassCmd "pass personal/outlook-app-password | head -n 1"
+    SSLType IMAPS
+
+# remote storage
+IMAPStore outlook-remote
+    Account outlook
+
+# local storage
+MaildirStore outlook-local
+    Subfolders Verbatim
+    # the trailing "/" is important
+    Path ~/data/mail/outlook/
+
+Channel outlook
+    Master :outlook-remote:
+    Slave :outlook-local:
+    Patterns *
+
+#### Account TH  #####
+IMAPAccount th
+    Host mailgate.thm.de
+    User {{TH_USER.stdout}}
+    PassCmd "pass personal/thm | head -n 1"
+    SSLType IMAPS
+
+# remote storage
+IMAPStore th-remote
+    Account th
+
+# local storage
+MaildirStore th-local
+    Subfolders Verbatim
+    # the trailing "/" is important
+    Path ~/data/mail/th/
+
+Channel th-default
+    Master :th-remote:
+    Slave :th-local:
+    Patterns * !INBOX !inbox
+
+Channel th-inbox
+    Master :th-remote:INBOX
+    Slave :th-local:inbox
+
+Group th
+    Channel th-default
+    Channel th-inbox
